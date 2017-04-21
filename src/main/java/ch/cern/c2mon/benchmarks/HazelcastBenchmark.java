@@ -1,10 +1,24 @@
 package ch.cern.c2mon.benchmarks;
 
-import ch.cern.c2mon.annotations.C2monBenchmark;
+import ch.cern.c2mon.utils.BenchmarkedMethods;
 
 /**
  * @author Szymon Halastra
  */
-@C2monBenchmark
-public class HazelcastBenchmark {
+public class HazelcastBenchmark implements BenchmarkedMethods {
+
+  @Override
+  public void putEntryBenchmark() {
+
+  }
+
+  @Override
+  public void getEntryBenchmark() {
+
+  }
+
+  @Override
+  public void setEntryBenchmark() {
+
+  }
 }
