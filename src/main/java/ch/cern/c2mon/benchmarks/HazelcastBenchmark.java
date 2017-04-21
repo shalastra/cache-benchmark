@@ -16,9 +16,4 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   public void getEntryBenchmark() {
 
   }
-
-  @Override
-  public void setEntryBenchmark() {
-
-  }
 }

@@ -17,9 +17,4 @@ public class EhCacheBenchmark implements BenchmarkedMethods {
   public void getEntryBenchmark() {
 
   }
-
-  @Override
-  public void setEntryBenchmark() {
-
-  }
 }
