@@ -3,5 +3,5 @@ package ch.cern.c2mon;
 /**
  * @author Szymon Halastra
  */
-public class IgniteClusterTEst {
+public class IgniteClusterTest {
 }
