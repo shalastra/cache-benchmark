@@ -24,3 +24,9 @@ public class MainApplication {
     new Runner(options).run();
   }
 }
+
+/** TODO:
+ * create configuration files for all caches by providing implementations of CachingProvider/CacheManager
+ * Write missing tests for clusters
+ * 
+ */

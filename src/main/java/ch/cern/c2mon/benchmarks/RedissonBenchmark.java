@@ -21,21 +21,19 @@ import org.openjdk.jmh.annotations.*;
 @State(Scope.Benchmark)
 @Measurement(iterations = 10)
 @Warmup(iterations = 10)
-public class IgniteBenchmark implements BenchmarkedMethods {
+public class RedissonBenchmark implements BenchmarkedMethods {
 
   Cache<Long, Entity> cache;
 
+
   @Setup
-  public void setup() {
+  public void init() {
+    MutableConfiguration<Long, Entity> configuration = new MutableConfiguration<>();
+
+    configuration.setStatisticsEnabled(true);
+
     CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
-    MutableConfiguration<Long, Entity> config = new MutableConfiguration<>();
-
-    cache = cacheManager.createCache("entities", config);
-  }
-
-  @TearDown
-  public void shutdown() {
-    Caching.getCachingProvider().close();
+    cache = cacheManager.createCache("entities", configuration);
   }
 
   @Benchmark
@@ -50,5 +48,10 @@ public class IgniteBenchmark implements BenchmarkedMethods {
   @Override
   public void getEntryBenchmark() {
     cache.get(ThreadLocalRandom.current().nextLong(100000, 999999));
+  }
+
+  @TearDown
+  public void shutdown() {
+    Caching.getCachingProvider().close();
   }
 }

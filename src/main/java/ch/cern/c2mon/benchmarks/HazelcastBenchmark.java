@@ -10,8 +10,7 @@ import javax.cache.spi.CachingProvider;
 
 import ch.cern.c2mon.entities.Entity;
 import ch.cern.c2mon.utils.BenchmarkedMethods;
-import com.hazelcast.cache.ICache;
-import com.hazelcast.core.Hazelcast;
+import com.hazelcast.cache.HazelcastCachingProvider;
 import org.openjdk.jmh.annotations.*;
 
 /**
@@ -28,7 +27,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
 
   @Setup
   public void setup() {
-    CachingProvider provider = Caching.getCachingProvider();
+    CachingProvider provider = Caching.getCachingProvider(HazelcastCachingProvider.class.getClassLoader());
 
     CacheManager cacheManager = provider.getCacheManager();
 
@@ -37,7 +36,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
 
   @TearDown
   public void shutdown() {
-    Hazelcast.shutdownAll();
+    Caching.getCachingProvider().close();
   }
 
   @Benchmark
