@@ -38,7 +38,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
 
   @Benchmark
   @Override
-  public void putEntryBenchmark() {
+  public void putEntityBenchmark() {
     Entity entity = new Entity();
 
     cache.put(entity.getId(), entity);
@@ -46,7 +46,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
 
   @Benchmark
   @Override
-  public void getEntryBenchmark() {
+  public void getEntityBenchmark() {
     cache.get(ThreadLocalRandom.current().nextLong(100000, 999999));
   }
 

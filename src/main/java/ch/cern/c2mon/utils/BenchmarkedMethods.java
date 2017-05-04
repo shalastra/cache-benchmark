@@ -5,7 +5,7 @@ package ch.cern.c2mon.utils;
  */
 public interface BenchmarkedMethods {
 
-  void putEntryBenchmark();
+  void putEntityBenchmark();
 
-  void getEntryBenchmark();
+  void getEntityBenchmark();
 }

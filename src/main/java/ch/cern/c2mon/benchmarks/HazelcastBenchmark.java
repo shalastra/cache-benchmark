@@ -1,5 +1,6 @@
 package ch.cern.c2mon.benchmarks;
 
+import java.net.URI;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +11,6 @@ import javax.cache.spi.CachingProvider;
 
 import ch.cern.c2mon.entities.Entity;
 import ch.cern.c2mon.utils.BenchmarkedMethods;
-import com.hazelcast.cache.HazelcastCachingProvider;
 import org.openjdk.jmh.annotations.*;
 
 /**
@@ -26,9 +26,9 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   Cache<Long, Entity> cache;
 
   @Setup
-  public void setup() {
-    CachingProvider provider = Caching.getCachingProvider(HazelcastCachingProvider.class.getClassLoader());
+  public void setup() throws Exception {
 
+    CachingProvider provider = Caching.getCachingProvider("com.hazelcast.cache.HazelcastCachingProvider");
     CacheManager cacheManager = provider.getCacheManager();
 
     cache = cacheManager.getCache("entities");
@@ -41,7 +41,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
 
   @Benchmark
   @Override
-  public void putEntryBenchmark() {
+  public void putEntityBenchmark() {
     Entity entity = new Entity();
     cache.put(entity.getId(), entity);
   }
@@ -49,7 +49,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
 
   @Benchmark
   @Override
-  public void getEntryBenchmark() {
+  public void getEntityBenchmark() {
     cache.get(ThreadLocalRandom.current().nextLong(100000, 999999));
   }
 }

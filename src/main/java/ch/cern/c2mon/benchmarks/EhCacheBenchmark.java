@@ -9,12 +9,12 @@ import ch.cern.c2mon.utils.BenchmarkedMethods;
 public class EhCacheBenchmark implements BenchmarkedMethods {
 
   @Override
-  public void putEntryBenchmark() {
+  public void putEntityBenchmark() {
 
   }
 
   @Override
-  public void getEntryBenchmark() {
+  public void getEntityBenchmark() {
 
   }
 }
