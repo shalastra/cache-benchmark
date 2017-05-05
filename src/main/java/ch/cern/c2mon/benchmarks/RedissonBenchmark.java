@@ -5,12 +5,15 @@ import java.util.concurrent.TimeUnit;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
+import javax.cache.configuration.Configuration;
 import javax.cache.spi.CachingProvider;
 
 import ch.cern.c2mon.entities.Entity;
 import ch.cern.c2mon.utils.BenchmarkProperties;
 import ch.cern.c2mon.utils.BenchmarkedMethods;
 import org.openjdk.jmh.annotations.*;
+import org.redisson.config.Config;
+import org.redisson.jcache.configuration.RedissonConfiguration;
 
 /**
  * @author Szymon Halastra
@@ -32,7 +35,13 @@ public class RedissonBenchmark implements BenchmarkedMethods {
     provider = Caching.getCachingProvider("org.redisson.jcache.JCachingProvider");
     CacheManager cacheManager = provider.getCacheManager();
 
-    cache = cacheManager.createCache("entities", BenchmarkProperties.createMutableConfiguration());
+    // Provided implementation fully passes TCK tests.
+    Config config = new Config();
+    config.setThreads(8);
+
+    Configuration<Long, Entity> configuration = RedissonConfiguration.fromConfig(config, BenchmarkProperties.createMutableConfiguration());
+
+    cache = cacheManager.createCache("entities", configuration);
 
     BenchmarkProperties.populateCache(cache);
   }
