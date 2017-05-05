@@ -3,6 +3,7 @@ package ch.cern.c2mon;
 import ch.cern.c2mon.benchmarks.EhCacheBenchmark;
 import ch.cern.c2mon.benchmarks.HazelcastBenchmark;
 import ch.cern.c2mon.benchmarks.IgniteBenchmark;
+import ch.cern.c2mon.benchmarks.RedissonBenchmark;
 import ch.cern.c2mon.utils.BenchmarkProperties;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
@@ -18,6 +19,7 @@ public class MainApplication {
             .include(IgniteBenchmark.class.getSimpleName())
             .include(HazelcastBenchmark.class.getSimpleName())
             .include(EhCacheBenchmark.class.getSimpleName())
+            .include(RedissonBenchmark.class.getSimpleName())
             .forks(BenchmarkProperties.FORKS_NUMBER)
             .build();
 
