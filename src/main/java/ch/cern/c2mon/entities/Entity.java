@@ -1,5 +1,6 @@
 package ch.cern.c2mon.entities;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import lombok.Data;
  */
 
 @Data
-public class Entity {
+public class Entity implements Serializable {
 
   private long id;
 
