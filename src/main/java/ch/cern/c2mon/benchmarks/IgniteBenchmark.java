@@ -4,6 +4,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
+import javax.cache.spi.CachingProvider;
 
 import ch.cern.c2mon.entities.Entity;
 import ch.cern.c2mon.utils.BenchmarkProperties;
@@ -22,31 +26,34 @@ import org.openjdk.jmh.annotations.*;
 public class IgniteBenchmark implements BenchmarkedMethods {
 
   Cache<Long, Entity> cache;
+  CachingProvider provider;
 
-////  @Setup
-//  public void setup() {
-//    CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
-//    MutableConfiguration<Long, Entity> config = new MutableConfiguration<>();
-//
-//    cache = cacheManager.createCache("entities", config);
-//  }
-//
-////  @TearDown
-//  public void shutdown() {
-//    Caching.getCachingProvider().close();
-//  }
+  @Setup
+  public void setup() throws Exception {
+    provider = Caching.getCachingProvider("org.apache.ignite.cache.CachingProvider");
+    CacheManager cacheManager = provider.getCacheManager();
 
-//  @Benchmark
+    cache = cacheManager.createCache("entities", BenchmarkProperties.createMutableConfiguration());
+
+    BenchmarkProperties.populateCache(cache);
+  }
+
+  @TearDown
+  public void shutdown() {
+    provider.close();
+  }
+
+  @Benchmark
   @Override
   public void putEntityBenchmark() {
     Entity entity = new Entity();
-
     cache.put(entity.getId(), entity);
   }
 
-//  @Benchmark
+
+  @Benchmark
   @Override
   public void getEntityBenchmark() {
-    cache.get(ThreadLocalRandom.current().nextLong(100000, 999999));
+    cache.get(BenchmarkProperties.getRandomKey(cache));
   }
 }
