@@ -18,17 +18,11 @@ public class MainApplication {
     Options options = new OptionsBuilder()
 //            .include(IgniteBenchmark.class.getSimpleName())
 //            .include(HazelcastBenchmark.class.getSimpleName())
-//            .include(EhCacheBenchmark.class.getSimpleName())
-            .include(RedissonBenchmark.class.getSimpleName())
+            .include(EhCacheBenchmark.class.getSimpleName())
+//            .include(RedissonBenchmark.class.getSimpleName())
             .forks(BenchmarkProperties.FORKS_NUMBER)
             .build();
 
     new Runner(options).run();
   }
 }
-
-/** TODO:
- * create configuration files for all caches by providing implementations of CachingProvider/CacheManager
- * Write missing tests for clusters
- *
- */
