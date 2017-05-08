@@ -1,5 +1,6 @@
 package ch.cern.c2mon.benchmarks;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.cache.Cache;
@@ -33,7 +34,7 @@ public class EhCacheBenchmark implements BenchmarkedMethods {
 
     cache = cacheManager.createCache("entities", BenchmarkProperties.createMutableConfiguration());
 
-    BenchmarkProperties.populateCache(cache);
+    cache.putAll(BenchmarkProperties.createEntities());
   }
 
   @TearDown
@@ -43,7 +44,7 @@ public class EhCacheBenchmark implements BenchmarkedMethods {
 
   @Benchmark
   @Override
-  public void putEntityBenchmark() {
+  public void putEntity() {
     Entity entity = new Entity();
     cache.put(entity.getId(), entity);
   }
@@ -51,7 +52,53 @@ public class EhCacheBenchmark implements BenchmarkedMethods {
 
   @Benchmark
   @Override
-  public void getEntityBenchmark() {
-    cache.get(BenchmarkProperties.getRandomKey(cache));
+  public Entity getEntity() {
+    Entity entity = cache.get(BenchmarkProperties.getRandomKey(cache));
+    return entity;
+  }
+
+  @Override
+  public Entity getAndPutEntity() {
+    return null;
+  }
+
+  @Override
+  public Map<Long, Entity> getAllEntities() {
+    return null;
+  }
+
+  @Override
+  public void putAllEntities() {
+
+  }
+
+  @Override
+  public void putIfAbsentEntity() {
+
+  }
+
+  @Override
+  public void removeEntity() {
+
+  }
+
+  @Override
+  public Entity getAndRemoveEntity() {
+    return null;
+  }
+
+  @Override
+  public void replaceEntity() {
+
+  }
+
+  @Override
+  public void getAndReplaceEntity() {
+
+  }
+
+  @Override
+  public void removeAllEntities() {
+
   }
 }

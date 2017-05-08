@@ -1,9 +1,7 @@
 package ch.cern.c2mon.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 import javax.cache.Cache;
 import javax.cache.configuration.MutableConfiguration;
@@ -32,22 +30,33 @@ public class BenchmarkProperties {
   }
 
   public static Long getRandomKey(Cache<Long, Entity> cache) {
-    List<Long> keys = new ArrayList<>();
-    Iterator<Cache.Entry<Long, Entity>> entries = cache.iterator();
-    while (entries.hasNext()) {
-      Cache.Entry<Long, Entity> entry = entries.next();
-      keys.add(entry.getKey());
-    }
+    List<Long> keys = new ArrayList<>(getKeys(cache));
 
     Collections.shuffle(keys);
 
     return keys.get(0);
   }
 
-  public static void populateCache(Cache<Long, Entity> cache) {
+  public static Set<Long> getKeys(Cache<Long, Entity> cache) {
+    Set<Long> keys = new HashSet<>();
+
+    Iterator<Cache.Entry<Long, Entity>> entries = cache.iterator();
+    while (entries.hasNext()) {
+      Cache.Entry<Long, Entity> entry = entries.next();
+      keys.add(entry.getKey());
+    }
+
+    return keys;
+  }
+
+  public static Map<Long, Entity> createEntities() {
+    Map<Long, Entity> entityMap = new HashMap<>();
+
     for (int i = 0; i < CACHE_SIZE; i++) {
       Entity entity = new Entity();
-      cache.put(entity.getId(), entity);
+      entityMap.put(entity.getId(), entity);
     }
+
+    return entityMap;
   }
 }

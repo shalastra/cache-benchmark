@@ -16,8 +16,8 @@ public class MainApplication {
 
   public static void main(String[] args) throws Exception {
     Options options = new OptionsBuilder()
-//            .include(IgniteBenchmark.class.getSimpleName())
-//            .include(HazelcastBenchmark.class.getSimpleName())
+            .include(IgniteBenchmark.class.getSimpleName())
+            .include(HazelcastBenchmark.class.getSimpleName())
             .include(EhCacheBenchmark.class.getSimpleName())
 //            .include(RedissonBenchmark.class.getSimpleName())
             .forks(BenchmarkProperties.FORKS_NUMBER)
