@@ -1,13 +1,11 @@
 package ch.cern.c2mon.benchmarks;
 
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
-import javax.cache.configuration.MutableConfiguration;
 import javax.cache.spi.CachingProvider;
 
 import ch.cern.c2mon.entities.Entity;
@@ -19,9 +17,9 @@ import org.openjdk.jmh.annotations.*;
  * @author Szymon Halastra
  */
 
-@BenchmarkMode(Mode.Throughput)
+@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-@State(Scope.Benchmark)
+@State(Scope.Thread)
 @Measurement(iterations = BenchmarkProperties.MEASUREMENT_ITERATIONS)
 @Warmup(iterations = BenchmarkProperties.WARM_UP_ITERATIONS)
 public class IgniteBenchmark implements BenchmarkedMethods {
@@ -68,6 +66,7 @@ public class IgniteBenchmark implements BenchmarkedMethods {
     return entity;
   }
 
+  @Benchmark
   @Override
   public Map<Long, Entity> getAllEntities() {
     Map<Long, Entity> entities = cache.getAll(BenchmarkProperties.getKeys(cache));
@@ -75,39 +74,55 @@ public class IgniteBenchmark implements BenchmarkedMethods {
     return entities;
   }
 
+  @Benchmark
   @Override
   public void putAllEntities() {
     cache.putAll(BenchmarkProperties.createEntities());
   }
 
+  @Benchmark
   @Override
-  public void putIfAbsentEntity() {
+  public boolean putIfAbsentEntity() {
+    Entity entity = new Entity();
+    boolean isAbsent = cache.putIfAbsent(entity.getId(), entity);
 
+    return isAbsent;
   }
 
+  @Benchmark
   @Override
-  public void removeEntity() {
+  public boolean removeEntity() {
+    boolean isRemoved = cache.remove(BenchmarkProperties.getRandomKey(cache));
 
+    return isRemoved;
   }
 
+  @Benchmark
   @Override
   public Entity getAndRemoveEntity() {
-
-    return null;
+    Entity entity = cache.getAndRemove(BenchmarkProperties.getRandomKey(cache));
+    return entity;
   }
 
+  @Benchmark
   @Override
-  public void replaceEntity() {
+  public boolean replaceEntity() {
+    boolean isReplaced = cache.replace(BenchmarkProperties.getRandomKey(cache), new Entity());
 
+    return isReplaced;
   }
 
+  @Benchmark
   @Override
-  public void getAndReplaceEntity() {
+  public Entity getAndReplaceEntity() {
+    Entity entity = cache.getAndReplace(BenchmarkProperties.getRandomKey(cache), new Entity());
 
+    return entity;
   }
 
+  @Benchmark
   @Override
   public void removeAllEntities() {
-
+    cache.removeAll(BenchmarkProperties.getKeys(cache));
   }
 }

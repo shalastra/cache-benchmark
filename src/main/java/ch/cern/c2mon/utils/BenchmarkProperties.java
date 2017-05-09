@@ -1,20 +1,22 @@
 package ch.cern.c2mon.utils;
 
-import java.io.Serializable;
 import java.util.*;
 
 import javax.cache.Cache;
 import javax.cache.configuration.MutableConfiguration;
 
 import ch.cern.c2mon.entities.Entity;
+import org.openjdk.jmh.annotations.Mode;
+
+import static org.openjdk.jmh.annotations.Mode.All;
 
 /**
  * @author Szymon Halastra
  */
 public class BenchmarkProperties {
 
-  public static final int WARM_UP_ITERATIONS = 2;
-  public static final int MEASUREMENT_ITERATIONS = 2;
+  public static final int WARM_UP_ITERATIONS = 5;
+  public static final int MEASUREMENT_ITERATIONS = 5;
 
   public static final int FORKS_NUMBER = 5;
   public static final int CACHE_SIZE = 10000;

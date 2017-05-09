@@ -19,15 +19,15 @@ public interface BenchmarkedMethods {
 
   void putAllEntities();
 
-  void putIfAbsentEntity();
+  boolean putIfAbsentEntity();
 
-  void removeEntity();
+  boolean removeEntity();
 
   Entity getAndRemoveEntity();
 
-  void replaceEntity();
+  boolean replaceEntity();
 
-  void getAndReplaceEntity();
+  Entity getAndReplaceEntity();
 
   void removeAllEntities();
 }
