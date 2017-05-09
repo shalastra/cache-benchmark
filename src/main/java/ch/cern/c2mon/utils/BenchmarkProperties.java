@@ -6,17 +6,18 @@ import javax.cache.Cache;
 import javax.cache.configuration.MutableConfiguration;
 
 import ch.cern.c2mon.entities.Entity;
-import org.openjdk.jmh.annotations.Mode;
-
-import static org.openjdk.jmh.annotations.Mode.All;
 
 /**
  * @author Szymon Halastra
  */
 public class BenchmarkProperties {
 
-  public static final int WARM_UP_ITERATIONS = 5;
-  public static final int MEASUREMENT_ITERATIONS = 5;
+  public static final String IGNITE_PROVIDER = "org.apache.ignite.cache.CachingProvider";
+  public static final String HAZELCAST_PROVIDER = "com.hazelcast.cache.HazelcastCachingProvider";
+  public static final String EHCACHE_PROVIDER = "org.ehcache.jsr107.EhcacheCachingProvider";
+
+  public static final int WARM_UP_ITERATIONS = 10;
+  public static final int MEASUREMENT_ITERATIONS =10;
 
   public static final int FORKS_NUMBER = 5;
   public static final int CACHE_SIZE = 10000;
