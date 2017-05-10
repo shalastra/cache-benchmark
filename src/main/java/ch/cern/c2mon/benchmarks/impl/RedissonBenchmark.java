@@ -1,4 +1,4 @@
-package ch.cern.c2mon.benchmarks;
+package ch.cern.c2mon.benchmarks.impl;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -9,9 +9,9 @@ import javax.cache.Caching;
 import javax.cache.configuration.Configuration;
 import javax.cache.spi.CachingProvider;
 
+import ch.cern.c2mon.benchmarks.AbstractBenchmark;
 import ch.cern.c2mon.entities.Entity;
-import ch.cern.c2mon.utils.BenchmarkProperties;
-import ch.cern.c2mon.utils.BenchmarkedMethods;
+import ch.cern.c2mon.utils.BenchmarkUtils;
 import org.openjdk.jmh.annotations.*;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -26,7 +26,7 @@ import redis.embedded.RedisServer;
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
-public class RedissonBenchmark implements BenchmarkedMethods {
+public class RedissonBenchmark implements AbstractBenchmark {
 
   CachingProvider provider;
   Cache<Long, Entity> cache;
@@ -46,13 +46,13 @@ public class RedissonBenchmark implements BenchmarkedMethods {
     provider = Caching.getCachingProvider("org.redisson.jcache.JCachingProvider");
     CacheManager cacheManager = provider.getCacheManager();
 
-    Configuration<Long, Entity> configuration = RedissonConfiguration.fromConfig(config, BenchmarkProperties.createMutableConfiguration());
+    Configuration<Long, Entity> configuration = RedissonConfiguration.fromConfig(config, BenchmarkUtils.createMutableConfiguration());
 
     client = Redisson.create(config);
 
-    cache = cacheManager.createCache("entities", BenchmarkProperties.createMutableConfiguration());
+    cache = cacheManager.createCache("entities", BenchmarkUtils.createMutableConfiguration());
 
-    cache.putAll(BenchmarkProperties.createEntities());
+    cache.putAll(BenchmarkUtils.createEntities());
   }
 
   @TearDown
@@ -73,7 +73,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getEntity() {
-    Entity entity = cache.get(BenchmarkProperties.getRandomKey(cache));
+    Entity entity = cache.get(BenchmarkUtils.getRandomKey(cache));
 
     return entity;
   }
@@ -81,7 +81,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getAndPutEntity() {
-    Entity entity = cache.getAndPut(BenchmarkProperties.getRandomKey(cache), new Entity());
+    Entity entity = cache.getAndPut(BenchmarkUtils.getRandomKey(cache), new Entity());
 
     return entity;
   }
@@ -89,7 +89,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Map<Long, Entity> getAllEntities() {
-    Map<Long, Entity> entities = cache.getAll(BenchmarkProperties.getKeys(cache));
+    Map<Long, Entity> entities = cache.getAll(BenchmarkUtils.getKeys(cache));
 
     return entities;
   }
@@ -97,7 +97,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public void putAllEntities() {
-    cache.putAll(BenchmarkProperties.createEntities());
+    cache.putAll(BenchmarkUtils.createEntities());
   }
 
   @Benchmark
@@ -112,7 +112,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public boolean removeEntity() {
-    boolean isRemoved = cache.remove(BenchmarkProperties.getRandomKey(cache));
+    boolean isRemoved = cache.remove(BenchmarkUtils.getRandomKey(cache));
 
     return isRemoved;
   }
@@ -120,14 +120,14 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getAndRemoveEntity() {
-    Entity entity = cache.getAndRemove(BenchmarkProperties.getRandomKey(cache));
+    Entity entity = cache.getAndRemove(BenchmarkUtils.getRandomKey(cache));
     return entity;
   }
 
   @Benchmark
   @Override
   public boolean replaceEntity() {
-    boolean isReplaced = cache.replace(BenchmarkProperties.getRandomKey(cache), new Entity());
+    boolean isReplaced = cache.replace(BenchmarkUtils.getRandomKey(cache), new Entity());
 
     return isReplaced;
   }
@@ -135,7 +135,7 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getAndReplaceEntity() {
-    Entity entity = cache.getAndReplace(BenchmarkProperties.getRandomKey(cache), new Entity());
+    Entity entity = cache.getAndReplace(BenchmarkUtils.getRandomKey(cache), new Entity());
 
     return entity;
   }
@@ -143,6 +143,6 @@ public class RedissonBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public void removeAllEntities() {
-    cache.removeAll(BenchmarkProperties.getKeys(cache));
+    cache.removeAll(BenchmarkUtils.getKeys(cache));
   }
 }

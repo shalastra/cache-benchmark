@@ -6,23 +6,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.cache.Cache;
 import javax.cache.configuration.MutableConfiguration;
 
+import ch.cern.c2mon.BenchmarkProperties;
 import ch.cern.c2mon.entities.Entity;
 
 /**
  * @author Szymon Halastra
  */
-public class BenchmarkProperties {
-
-  public static final String IGNITE_PROVIDER = "org.apache.ignite.cache.CachingProvider";
-  public static final String HAZELCAST_PROVIDER = "com.hazelcast.cache.HazelcastCachingProvider";
-  public static final String EHCACHE_PROVIDER = "org.ehcache.jsr107.EhcacheCachingProvider";
-
-  public static final int WARM_UP_ITERATIONS = 10;
-  public static final int MEASUREMENT_ITERATIONS =10;
-
-  public static final int FORKS_NUMBER = 5;
-  public static final int CACHE_SIZE = 10000;
-
+public class BenchmarkUtils {
   public static MutableConfiguration<Long, Entity> createMutableConfiguration() {
     MutableConfiguration<Long, Entity> configuration = new MutableConfiguration<>();
 
@@ -56,7 +46,7 @@ public class BenchmarkProperties {
   public static Map<Long, Entity> createEntities() {
     Map<Long, Entity> entityMap = new HashMap<>();
 
-    for (int i = 0; i < CACHE_SIZE; i++) {
+    for (int i = 0; i < BenchmarkProperties.CACHE_SIZE; i++) {
       Entity entity = new Entity();
       entityMap.put(entity.getId(), entity);
     }

@@ -1,4 +1,4 @@
-package ch.cern.c2mon.benchmarks;
+package ch.cern.c2mon.benchmarks.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,19 +10,19 @@ import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
 
+import ch.cern.c2mon.benchmarks.AbstractBenchmark;
 import ch.cern.c2mon.entities.Entity;
-import ch.cern.c2mon.utils.BenchmarkProperties;
-import ch.cern.c2mon.utils.BenchmarkedMethods;
+import ch.cern.c2mon.BenchmarkProperties;
+import ch.cern.c2mon.utils.BenchmarkUtils;
 import org.openjdk.jmh.annotations.*;
 
 /**
  * @author Szymon Halastra
  */
-
 @BenchmarkMode({Mode.Throughput})
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
-public class IgniteBenchmark implements BenchmarkedMethods {
+public class HazelcastBenchmark implements AbstractBenchmark {
 
   Cache<Long, Entity> cache;
   CachingProvider provider;
@@ -33,14 +33,14 @@ public class IgniteBenchmark implements BenchmarkedMethods {
 
   @Setup
   public void setup() throws Exception {
-    entityMap = new HashMap<>(BenchmarkProperties.createEntities());
+    entityMap = new HashMap<>(BenchmarkUtils.createEntities());
     keys = entityMap.keySet();
-    randomKey = BenchmarkProperties.randomKey(entityMap, keys);
+    randomKey = BenchmarkUtils.randomKey(entityMap, keys);
 
-    provider = Caching.getCachingProvider(BenchmarkProperties.IGNITE_PROVIDER);
+    provider = Caching.getCachingProvider(BenchmarkProperties.HAZELCAST_PROVIDER);
     CacheManager cacheManager = provider.getCacheManager();
 
-    cache = cacheManager.createCache("entities", BenchmarkProperties.createMutableConfiguration());
+    cache = cacheManager.createCache("entities", BenchmarkUtils.createMutableConfiguration());
 
     cache.putAll(entityMap);
   }

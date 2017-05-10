@@ -1,10 +1,8 @@
 package ch.cern.c2mon;
 
-import ch.cern.c2mon.benchmarks.EhCacheBenchmark;
-import ch.cern.c2mon.benchmarks.HazelcastBenchmark;
-import ch.cern.c2mon.benchmarks.IgniteBenchmark;
-import ch.cern.c2mon.benchmarks.RedissonBenchmark;
-import ch.cern.c2mon.utils.BenchmarkProperties;
+import ch.cern.c2mon.benchmarks.impl.EhCacheBenchmark;
+import ch.cern.c2mon.benchmarks.impl.HazelcastBenchmark;
+import ch.cern.c2mon.benchmarks.impl.IgniteBenchmark;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;

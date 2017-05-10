@@ -1,4 +1,4 @@
-package ch.cern.c2mon.utils;
+package ch.cern.c2mon.benchmarks;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import ch.cern.c2mon.entities.Entity;
 /**
  * @author Szymon Halastra
  */
-public interface BenchmarkedMethods {
+public interface AbstractBenchmark {
 
   void putEntity();
 
