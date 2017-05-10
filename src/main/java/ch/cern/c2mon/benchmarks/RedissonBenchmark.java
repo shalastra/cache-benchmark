@@ -26,8 +26,6 @@ import redis.embedded.RedisServer;
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
-@Measurement(iterations = BenchmarkProperties.MEASUREMENT_ITERATIONS)
-@Warmup(iterations = BenchmarkProperties.WARM_UP_ITERATIONS)
 public class RedissonBenchmark implements BenchmarkedMethods {
 
   CachingProvider provider;

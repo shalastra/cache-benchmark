@@ -1,5 +1,6 @@
 package ch.cern.c2mon.benchmarks;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -25,23 +26,22 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   Cache<Long, Entity> cache;
   CachingProvider provider;
 
-  Map<Long, Entity> entitiesMap;
-  long key;
-  Set<Long> keys;
+  public Map<Long, Entity> entityMap;
+  public long randomKey;
+  public Set<Long> keys;
 
   @Setup
   public void setup() throws Exception {
-    entitiesMap = BenchmarkProperties.createEntities();
+    entityMap = new HashMap<>(BenchmarkProperties.createEntities());
+    keys = entityMap.keySet();
+    randomKey = BenchmarkProperties.randomKey(entityMap, keys);
 
     provider = Caching.getCachingProvider(BenchmarkProperties.HAZELCAST_PROVIDER);
     CacheManager cacheManager = provider.getCacheManager();
 
     cache = cacheManager.createCache("entities", BenchmarkProperties.createMutableConfiguration());
 
-    cache.putAll(entitiesMap);
-
-    key = BenchmarkProperties.getRandomKey(cache);
-    keys = BenchmarkProperties.getKeys(cache);
+    cache.putAll(entityMap);
   }
 
   @TearDown
@@ -60,7 +60,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getEntity() {
-    Entity entity = cache.get(key);
+    Entity entity = cache.get(randomKey);
 
     return entity;
   }
@@ -68,7 +68,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getAndPutEntity() {
-    Entity entity = cache.getAndPut(key, new Entity());
+    Entity entity = cache.getAndPut(randomKey, new Entity());
 
     return entity;
   }
@@ -84,7 +84,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public void putAllEntities() {
-    cache.putAll(entitiesMap);
+    cache.putAll(entityMap);
   }
 
   @Benchmark
@@ -99,7 +99,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public boolean removeEntity() {
-    boolean isRemoved = cache.remove(key);
+    boolean isRemoved = cache.remove(randomKey);
 
     return isRemoved;
   }
@@ -107,14 +107,14 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getAndRemoveEntity() {
-    Entity entity = cache.getAndRemove(key);
+    Entity entity = cache.getAndRemove(randomKey);
     return entity;
   }
 
   @Benchmark
   @Override
   public boolean replaceEntity() {
-    boolean isReplaced = cache.replace(key, new Entity());
+    boolean isReplaced = cache.replace(randomKey, new Entity());
 
     return isReplaced;
   }
@@ -122,7 +122,7 @@ public class HazelcastBenchmark implements BenchmarkedMethods {
   @Benchmark
   @Override
   public Entity getAndReplaceEntity() {
-    Entity entity = cache.getAndReplace(key, new Entity());
+    Entity entity = cache.getAndReplace(randomKey, new Entity());
 
     return entity;
   }

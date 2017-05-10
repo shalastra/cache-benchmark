@@ -1,6 +1,7 @@
 package ch.cern.c2mon.utils;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.cache.Cache;
 import javax.cache.configuration.MutableConfiguration;
@@ -61,5 +62,18 @@ public class BenchmarkProperties {
     }
 
     return entityMap;
+  }
+
+  public static long randomKey(Map<Long, Entity> entityMap, Set<Long> keys) {
+    long item = ThreadLocalRandom.current().nextInt(entityMap.size());
+    int i = 0;
+
+    for(long value : keys) {
+      if(item == i) {
+        return value;
+      }
+      i++;
+    }
+    return keys.iterator().next();
   }
 }
