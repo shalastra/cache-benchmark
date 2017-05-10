@@ -1,33 +1,41 @@
 package ch.cern.c2mon.benchmarks;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import ch.cern.c2mon.entities.Entity;
+import lombok.extern.slf4j.Slf4j;
+import org.openjdk.jmh.annotations.*;
 
 /**
  * @author Szymon Halastra
  */
-public interface AbstractBenchmark {
 
-  void putEntity();
+@Slf4j
+@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@State(Scope.Thread)
+public abstract class AbstractBenchmark {
 
-  Entity getEntity();
+  public abstract void putEntity();
 
-  Entity getAndPutEntity();
+  public abstract Entity getEntity();
 
-  Map<Long, Entity> getAllEntities();
+  public abstract Entity getAndPutEntity();
 
-  void putAllEntities();
+  public abstract Map<Long, Entity> getAllEntities();
 
-  boolean putIfAbsentEntity();
+  public abstract void putAllEntities();
 
-  boolean removeEntity();
+  public abstract boolean putIfAbsentEntity();
 
-  Entity getAndRemoveEntity();
+  public abstract boolean removeEntity();
 
-  boolean replaceEntity();
+  public abstract Entity getAndRemoveEntity();
 
-  Entity getAndReplaceEntity();
+  public abstract boolean replaceEntity();
 
-  void removeAllEntities();
+  public abstract Entity getAndReplaceEntity();
+
+  public abstract void removeAllEntities();
 }

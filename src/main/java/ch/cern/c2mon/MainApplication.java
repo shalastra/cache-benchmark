@@ -3,6 +3,7 @@ package ch.cern.c2mon;
 import ch.cern.c2mon.benchmarks.impl.EhCacheBenchmark;
 import ch.cern.c2mon.benchmarks.impl.HazelcastBenchmark;
 import ch.cern.c2mon.benchmarks.impl.IgniteBenchmark;
+import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -21,6 +22,7 @@ public class MainApplication {
             .forks(BenchmarkProperties.FORKS_NUMBER)
             .measurementIterations(BenchmarkProperties.MEASUREMENT_ITERATIONS)
             .warmupIterations(BenchmarkProperties.WARM_UP_ITERATIONS)
+//            .addProfiler(GCProfiler.class)
             .build();
 
     new Runner(options).run();

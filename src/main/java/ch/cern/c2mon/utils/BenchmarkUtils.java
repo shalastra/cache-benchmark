@@ -16,9 +16,8 @@ public class BenchmarkUtils {
   public static MutableConfiguration<Long, Entity> createMutableConfiguration() {
     MutableConfiguration<Long, Entity> configuration = new MutableConfiguration<>();
 
-    configuration.setStoreByValue(true); // otherwise value has to be Serializable
+    configuration.setStoreByValue(true);
     configuration.setTypes(Long.class, Entity.class);
-    configuration.setStatisticsEnabled(true);
 
     return configuration;
   }

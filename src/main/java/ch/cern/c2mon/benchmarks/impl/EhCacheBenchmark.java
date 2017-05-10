@@ -3,27 +3,24 @@ package ch.cern.c2mon.benchmarks.impl;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
 
+import ch.cern.c2mon.BenchmarkProperties;
 import ch.cern.c2mon.benchmarks.AbstractBenchmark;
 import ch.cern.c2mon.entities.Entity;
-import ch.cern.c2mon.BenchmarkProperties;
 import ch.cern.c2mon.utils.BenchmarkUtils;
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.TearDown;
 
 /**
  * @author Szymon Halastra
  */
-
-@BenchmarkMode({Mode.Throughput})
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-@State(Scope.Thread)
-public class EhCacheBenchmark implements AbstractBenchmark {
+public class EhCacheBenchmark  extends AbstractBenchmark {
 
   Cache<Long, Entity> cache;
   CachingProvider provider;
@@ -52,7 +49,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public void putEntity() {
     Entity entity = new Entity();
     cache.put(entity.getId(), entity);
@@ -60,7 +56,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
 
 
   @Benchmark
-  @Override
   public Entity getEntity() {
     Entity entity = cache.get(randomKey);
 
@@ -68,7 +63,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public Entity getAndPutEntity() {
     Entity entity = cache.getAndPut(randomKey, new Entity());
 
@@ -76,7 +70,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public Map<Long, Entity> getAllEntities() {
     Map<Long, Entity> entities = cache.getAll(keys);
 
@@ -84,13 +77,11 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public void putAllEntities() {
     cache.putAll(entityMap);
   }
 
   @Benchmark
-  @Override
   public boolean putIfAbsentEntity() {
     Entity entity = new Entity();
     boolean isAbsent = cache.putIfAbsent(entity.getId(), entity);
@@ -99,7 +90,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public boolean removeEntity() {
     boolean isRemoved = cache.remove(randomKey);
 
@@ -107,14 +97,12 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public Entity getAndRemoveEntity() {
     Entity entity = cache.getAndRemove(randomKey);
     return entity;
   }
 
   @Benchmark
-  @Override
   public boolean replaceEntity() {
     boolean isReplaced = cache.replace(randomKey, new Entity());
 
@@ -122,7 +110,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public Entity getAndReplaceEntity() {
     Entity entity = cache.getAndReplace(randomKey, new Entity());
 
@@ -130,7 +117,6 @@ public class EhCacheBenchmark implements AbstractBenchmark {
   }
 
   @Benchmark
-  @Override
   public void removeAllEntities() {
     cache.removeAll(keys);
   }

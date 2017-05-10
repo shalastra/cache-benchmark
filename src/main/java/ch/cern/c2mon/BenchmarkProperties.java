@@ -9,10 +9,10 @@ public class BenchmarkProperties {
   public static final String HAZELCAST_PROVIDER = "com.hazelcast.cache.HazelcastCachingProvider";
   public static final String EHCACHE_PROVIDER = "org.ehcache.jsr107.EhcacheCachingProvider";
 
-  public static final int WARM_UP_ITERATIONS = 10;
-  public static final int MEASUREMENT_ITERATIONS =10;
+  public static final int WARM_UP_ITERATIONS = 15;
+  public static final int MEASUREMENT_ITERATIONS = 15;
 
-  public static final int FORKS_NUMBER = 5;
+  public static final int FORKS_NUMBER = 10;
 
   public static final int CACHE_SIZE = 100000;
 }
