@@ -3,6 +3,7 @@ package ch.cern.c2mon;
 import ch.cern.c2mon.benchmarks.impl.EhCacheBenchmark;
 import ch.cern.c2mon.benchmarks.impl.HazelcastBenchmark;
 import ch.cern.c2mon.benchmarks.impl.IgniteBenchmark;
+import ch.cern.c2mon.benchmarks.impl.RedissonBenchmark;
 import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
